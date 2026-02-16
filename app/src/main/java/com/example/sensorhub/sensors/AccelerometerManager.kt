@@ -1,0 +1,105 @@
+package com.example.sensorhub.sensors
+
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import com.example.sensorhub.data.model.AccelerometerData
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlin.math.sqrt
+
+/**
+ * Manager for accelerometer sensor
+ * Provides real-time accelerometer data via Flow
+ */
+class AccelerometerManager(context: Context) {
+    
+    private val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    private val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+    
+    /**
+     * Check if accelerometer is available on this device
+     */
+    fun isAvailable(): Boolean = accelerometer != null
+    
+    /**
+     * Get accelerometer data as a Flow
+     * @param samplingPeriodUs Sampling period in microseconds (default: SENSOR_DELAY_UI)
+     */
+    fun getAccelerometerFlow(
+        samplingPeriodUs: Int = SensorManager.SENSOR_DELAY_UI
+    ): Flow<AccelerometerData> = callbackFlow {
+        
+        val listener = object : SensorEventListener {
+            override fun onSensorChanged(event: SensorEvent) {
+                if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+                    val x = event.values[0]
+                    val y = event.values[1]
+                    val z = event.values[2]
+                    
+                    // Calculate magnitude
+                    val magnitude = sqrt(x * x + y * y + z * z)
+                    
+                    val data = AccelerometerData(
+                        timestamp = System.currentTimeMillis(),
+                        x = x,
+                        y = y,
+                        z = z,
+                        magnitude = magnitude
+                    )
+                    
+                    trySend(data)
+                }
+            }
+            
+            override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
+                // Handle accuracy changes if needed
+            }
+        }
+        
+        // Register listener
+        accelerometer?.let {
+            sensorManager.registerListener(listener, it, samplingPeriodUs)
+        }
+        
+        // Unregister when Flow is cancelled
+        awaitClose {
+            sensorManager.unregisterListener(listener)
+        }
+    }
+    
+    /**
+     * Get sensor information
+     */
+    fun getSensorInfo(): SensorInfo? {
+        return accelerometer?.let {
+            SensorInfo(
+                name = it.name,
+                vendor = it.vendor,
+                version = it.version,
+                type = it.type,
+                maxRange = it.maximumRange,
+                resolution = it.resolution,
+                power = it.power,
+                minDelay = it.minDelay
+            )
+        }
+    }
+}
+
+/**
+ * Data class containing sensor information
+ */
+data class SensorInfo(
+    val name: String,
+    val vendor: String,
+    val version: Int,
+    val type: Int,
+    val maxRange: Float,
+    val resolution: Float,
+    val power: Float,
+    val minDelay: Int
+)

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SensorHub</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_sensors">Sensors</string>
+    <string name="nav_interactions">Interactions</string>
+    <string name="nav_affective">Affective</string>
+    <string name="nav_settings">Settings</string>
+    
+    <!-- Sensor Names -->
+    <string name="sensor_accelerometer">Accelerometer</string>
+    <string name="sensor_gyroscope">Gyroscope</string>
+    <string name="sensor_magnetometer">Magnetometer</string>
+    <string name="sensor_light">Light Sensor</string>
+    <string name="sensor_gps">GPS</string>
+    <string name="sensor_proximity">Proximity Sensor</string>
+    <string name="sensor_barometer">Barometer</string>
+    
+    <!-- Common Actions -->
+    <string name="action_start">Start</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_save">Save</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_info">Info</string>
+    <string name="action_settings">Settings</string>
+    
+    <!-- Messages -->
+    <string name="sensor_not_available">Sensor not available on this device</string>
+    <string name="sensor_monitoring">Monitoring active</string>
+    <string name="sensor_stopped">Monitoring stopped</string>
+    <string name="permission_required">Permission required</string>
+    <string name="permission_denied">Permission denied</string>
+    
+    <!-- Units -->
+    <string name="unit_acceleration">m/s²</string>
+    <string name="unit_rotation">rad/s</string>
+    <string name="unit_magnetic_field">µT</string>
+    <string name="unit_light">lux</string>
+    <string name="unit_pressure">hPa</string>
+    <string name="unit_distance">cm</string>
+    <string name="unit_degrees">°</string>
+</resources>
