@@ -264,8 +264,7 @@ fun AccelerometerVisualization(
 ) {
     val animatedX by animateFloatAsState(targetValue = x, label = "x")
     val animatedY by animateFloatAsState(targetValue = y, label = "y")
-    val animatedZ by animateFloatAsState(targetValue = z, label = "z")
-    
+
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(

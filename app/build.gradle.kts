@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.sensorhub"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.sensorhub"
@@ -80,6 +80,16 @@ dependencies {
     // Room Database
     implementation("androidx.room:room-runtime:2.6.0")
     implementation("androidx.room:room-ktx:2.6.0")
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
+    implementation("androidx.fragment:fragment:1.8.9")
+    implementation("com.google.android.material:material:1.13.0")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
+    implementation("com.google.android.gms:play-services-ads:24.9.0")
+    implementation("com.google.android.gms:play-services-maps:20.0.0")
+    implementation("androidx.gridlayout:gridlayout:1.1.0")
     ksp("androidx.room:room-compiler:2.6.0")
 
     // DataStore
@@ -94,7 +104,9 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 
     // Charts
-    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.patrykandpatrick.vico:compose:2.4.3")
+    implementation("com.patrykandpatrick.vico:compose-m3:2.4.3")
+    implementation("com.patrykandpatrick.vico:core:2.4.3")
 
     // Permissions
     implementation("com.google.accompanist:accompanist-permissions:0.32.0")

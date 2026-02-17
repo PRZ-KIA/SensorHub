@@ -253,7 +253,7 @@ class DataExportManager(private val context: Context) {
                 "oldest" to dateFormat.format(Date(readings.minOfOrNull { it.timestamp } ?: 0)),
                 "newest" to dateFormat.format(Date(readings.maxOfOrNull { it.timestamp } ?: 0))
             ),
-            "byType" to grouped.mapValues { (type, typeReadings) ->
+            "byType" to grouped.mapValues { (_, typeReadings) ->
                 mapOf(
                     "count" to typeReadings.size,
                     "xStats" to getValueStats(typeReadings.map { it.x }),

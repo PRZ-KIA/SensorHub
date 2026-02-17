@@ -112,7 +112,7 @@ class SensorWidgetConfigActivity : android.app.Activity() {
         val resultValue = Intent().apply {
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         }
-        setResult(android.app.Activity.RESULT_OK, resultValue)
+        setResult(RESULT_OK, resultValue)
         
         // Update widget
         val appWidgetManager = AppWidgetManager.getInstance(this)

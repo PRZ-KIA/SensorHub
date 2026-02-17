@@ -47,7 +47,7 @@ fun Cube3DVisualization(
             // Calculate rotation angles from accelerometer data
             val rotX = animatedX * 0.1f
             val rotY = animatedY * 0.1f
-            val rotZ = animatedZ * 0.1f
+            animatedZ * 0.1f
             
             // Draw 3D cube with perspective
             val vertices = listOf(

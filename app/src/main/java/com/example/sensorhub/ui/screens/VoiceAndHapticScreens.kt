@@ -48,7 +48,7 @@ import kotlin.math.sin
 fun VoiceRecognitionScreen(
     viewModel: VoiceViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
+    LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     
     // Audio permission launcher

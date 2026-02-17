@@ -59,12 +59,12 @@
                 android:tint="#2196F3" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="115dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="Accelerometer"
-                android:textSize="12sp"
                 android:textColor="#FFFFFF"
-                android:layout_marginTop="4dp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- Gyroscope -->
@@ -86,12 +86,12 @@
                 android:tint="#4CAF50" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="123dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="Gyroscope"
-                android:textSize="12sp"
                 android:textColor="#FFFFFF"
-                android:layout_marginTop="4dp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- Magnetometer -->
@@ -113,12 +113,12 @@
                 android:tint="#F44336" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="118dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="Magnetometer"
-                android:textSize="12sp"
                 android:textColor="#FFFFFF"
-                android:layout_marginTop="4dp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- Light Sensor -->
@@ -140,12 +140,12 @@
                 android:tint="#FFC107" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="117dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="Light"
-                android:textSize="12sp"
                 android:textColor="#FFFFFF"
-                android:layout_marginTop="4dp" />
+                android:textSize="12sp" />
         </LinearLayout>
     </GridLayout>
 </LinearLayout>

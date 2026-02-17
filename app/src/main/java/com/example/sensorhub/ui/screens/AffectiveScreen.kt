@@ -327,7 +327,7 @@ fun AffectiveStateVisualization(
             )
             
             // Draw quadrants with colors
-            val quadrants = listOf(
+            listOf(
                 // Happy (high valence, high arousal)
                 Pair(Color(0xFF4CAF50).copy(alpha = 0.2f), Offset(1f, -1f)),
                 // Excited (high valence, low arousal)

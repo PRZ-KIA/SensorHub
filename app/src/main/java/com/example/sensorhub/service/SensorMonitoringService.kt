@@ -218,7 +218,7 @@ class SensorMonitoringService : Service() {
     
     private fun updateNotification() {
         val notification = createNotification()
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(NOTIFICATION_ID, notification)
     }
     
