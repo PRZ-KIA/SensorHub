@@ -169,6 +169,11 @@ fun SensorHubApp() {
                     AffectiveComputingScreen()
                 }
                 
+                // Barometer
+                composable(Screen.Barometer.route) {
+                    BarometerScreen()
+                }
+                
                 // Statistics & Export
                 composable("statistics") {
                     StatisticsDashboardScreen()

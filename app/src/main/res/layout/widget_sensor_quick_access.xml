@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@drawable/widget_background">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SensorHub"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF" />
+
+        <ImageButton
+            android:id="@+id/widget_open_app"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@android:drawable/ic_menu_info_details"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Open App" />
+    </LinearLayout>
+
+    <!-- Sensor Grid -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:rowCount="2"
+        android:layout_marginTop="8dp">
+
+        <!-- Accelerometer -->
+        <LinearLayout
+            android:id="@+id/widget_accelerometer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:background="@drawable/widget_button_background"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_compass"
+                android:tint="#2196F3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accelerometer"
+                android:textSize="12sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Gyroscope -->
+        <LinearLayout
+            android:id="@+id/widget_gyroscope"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:background="@drawable/widget_button_background"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_rotate"
+                android:tint="#4CAF50" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gyroscope"
+                android:textSize="12sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Magnetometer -->
+        <LinearLayout
+            android:id="@+id/widget_magnetometer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:background="@drawable/widget_button_background"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_mylocation"
+                android:tint="#F44336" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Magnetometer"
+                android:textSize="12sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Light Sensor -->
+        <LinearLayout
+            android:id="@+id/widget_light"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="4dp"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:background="@drawable/widget_button_background"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_day"
+                android:tint="#FFC107" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Light"
+                android:textSize="12sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+    </GridLayout>
+</LinearLayout>

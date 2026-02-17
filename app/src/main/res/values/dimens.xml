@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing -->
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_medium">24dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="spacing_xlarge">48dp</dimen>
+    
+    <!-- Text Sizes -->
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_normal">14sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_xlarge">24sp</dimen>
+    <dimen name="text_size_xxlarge">32sp</dimen>
+    
+    <!-- Icon Sizes -->
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_normal">24dp</dimen>
+    <dimen name="icon_size_medium">32dp</dimen>
+    <dimen name="icon_size_large">48dp</dimen>
+    <dimen name="icon_size_xlarge">64dp</dimen>
+    
+    <!-- Button Sizes -->
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_height_small">36dp</dimen>
+    <dimen name="button_height_large">56dp</dimen>
+    
+    <!-- Card -->
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    
+    <!-- Sensor Gauge -->
+    <dimen name="gauge_size">200dp</dimen>
+    <dimen name="gauge_stroke_width">20dp</dimen>
+    
+    <!-- Widget -->
+    <dimen name="widget_padding">8dp</dimen>
+    <dimen name="widget_corner_radius">16dp</dimen>
+</resources>

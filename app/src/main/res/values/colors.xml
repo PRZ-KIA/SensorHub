@@ -1,10 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Primary Colors -->
+    <color name="primary">#6200EE</color>
+    <color name="primary_variant">#3700B3</color>
+    <color name="secondary">#03DAC6</color>
+    <color name="secondary_variant">#018786</color>
+    
+    <!-- Background Colors -->
+    <color name="background">#FFFFFF</color>
+    <color name="background_dark">#121212</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_dark">#1E1E1E</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#000000</color>
+    <color name="text_primary_dark">#FFFFFF</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_secondary_dark">#B0B0B0</color>
+    
+    <!-- Sensor Colors -->
+    <color name="sensor_accelerometer">#2196F3</color>
+    <color name="sensor_gyroscope">#4CAF50</color>
+    <color name="sensor_magnetometer">#F44336</color>
+    <color name="sensor_light">#FFC107</color>
+    <color name="sensor_gps">#00BCD4</color>
+    <color name="sensor_proximity">#9C27B0</color>
+    <color name="sensor_barometer">#FF5722</color>
+    
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="error">#F44336</color>
+    <color name="info">#2196F3</color>
+    
+    <!-- Chart Colors -->
+    <color name="chart_line_1">#2196F3</color>
+    <color name="chart_line_2">#4CAF50</color>
+    <color name="chart_line_3">#F44336</color>
+    <color name="chart_fill">#E3F2FD</color>
+    
+    <!-- Emotion Colors -->
+    <color name="emotion_calm">#4CAF50</color>
+    <color name="emotion_stressed">#F44336</color>
+    <color name="emotion_active">#FF9800</color>
+    <color name="emotion_focused">#2196F3</color>
+    <color name="emotion_anxious">#9C27B0</color>
+    <color name="emotion_relaxed">#00BCD4</color>
+    <color name="emotion_excited">#FF5722</color>
+    <color name="emotion_bored">#607D8B</color>
+    
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#6200EE</color>
+    <color name="gradient_end">#03DAC6</color>
+    
+    <!-- Widget Colors -->
+    <color name="widget_background">#CC000000</color>
+    <color name="widget_text">#FFFFFF</color>
+    <color name="widget_button">#33FFFFFF</color>
+    
+    <!-- Transparent -->
+    <color name="transparent">#00000000</color>
+    
+    <!-- Overlay -->
+    <color name="overlay_light">#1A000000</color>
+    <color name="overlay_dark">#1AFFFFFF</color>
 </resources>
