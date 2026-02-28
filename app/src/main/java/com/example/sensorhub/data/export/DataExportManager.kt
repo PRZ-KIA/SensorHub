@@ -37,15 +37,17 @@ class DataExportManager(private val context: Context) {
             val file = createExportFile(fileName ?: generateFileName(), "csv")
             FileWriter(file).use { writer ->
                 // Write CSV header
-                writer.append("ID,Sensor Type,X,Y,Z,Timestamp,Human Readable Time\n")
+                writer.append("ID,Sensor Type,X,Y,Z,Extra,Accuracy,Timestamp,Human Readable Time\n")
 
                 // Write data rows
                 readings.forEach { reading ->
                     writer.append("${reading.id},")
                     writer.append("${reading.sensorType},")
-                    writer.append("${reading.x},")
-                    writer.append("${reading.y},")
-                    writer.append("${reading.z},")
+                    writer.append("${reading.valueX},")
+                    writer.append("${reading.valueY},")
+                    writer.append("${reading.valueZ},")
+                    writer.append("${reading.valueExtra},")
+                    writer.append("${reading.accuracy},")
                     writer.append("${reading.timestamp},")
                     writer.append("${formatTimestamp(reading.timestamp)}\n")
                 }
@@ -90,9 +92,11 @@ class DataExportManager(private val context: Context) {
                     val readingObj = JSONObject().apply {
                         put("id", reading.id)
                         put("sensorType", reading.sensorType)
-                        put("x", reading.x)
-                        put("y", reading.y)
-                        put("z", reading.z)
+                        put("x", reading.valueX)
+                        put("y", reading.valueY)
+                        put("z", reading.valueZ)
+                        put("extra", reading.valueExtra)
+                        put("accuracy", reading.accuracy)
                         put("timestamp", reading.timestamp)
                         put("timestampReadable", formatTimestamp(reading.timestamp))
                     }
@@ -269,9 +273,11 @@ class DataExportManager(private val context: Context) {
             "byType" to grouped.mapValues { (_, typeReadings) ->
                 mapOf(
                     "count" to typeReadings.size,
-                    "xStats" to getValueStats(typeReadings.map { it.x }),
-                    "yStats" to getValueStats(typeReadings.map { it.y }),
-                    "zStats" to getValueStats(typeReadings.map { it.z })
+                    "xStats" to getValueStats(typeReadings.map { it.valueX }),
+                    "yStats" to getValueStats(typeReadings.map { it.valueY }),
+                    "zStats" to getValueStats(typeReadings.map { it.valueZ }),
+                    "extraStats" to getValueStats(typeReadings.map { it.valueExtra }),
+                    "accuracyStats" to getValueStats(typeReadings.map { it.accuracy })
                 )
             }
         )
