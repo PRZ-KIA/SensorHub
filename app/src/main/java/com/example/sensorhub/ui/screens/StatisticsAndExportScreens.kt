@@ -1,4 +1,4 @@
-package com.example.sensorhub.ui.screens
+package com.kia.sensorhub.ui.screens
 
 import android.content.Context
 import android.content.Intent
@@ -21,9 +21,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.example.sensorhub.data.model.SensorReading
-import com.example.sensorhub.data.repository.SensorRepository
-import com.example.sensorhub.utils.DataExport
+import com.kia.sensorhub.data.model.SensorReading
+import com.kia.sensorhub.data.repository.SensorRepository
+import com.kia.sensorhub.utils.DataExport
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

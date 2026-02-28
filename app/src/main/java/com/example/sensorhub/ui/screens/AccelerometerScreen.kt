@@ -1,4 +1,4 @@
-package com.example.sensorhub.ui.screens
+package com.kia.sensorhub.ui.screens
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
@@ -19,10 +19,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.sensorhub.ui.components.SensorCard
-import com.example.sensorhub.ui.components.SensorInfoDialog
-import com.example.sensorhub.ui.theme.SensorAccelerometer
-import com.example.sensorhub.viewmodel.AccelerometerViewModel
+import com.kia.sensorhub.ui.components.SensorCard
+import com.kia.sensorhub.ui.components.SensorInfoDialog
+import com.kia.sensorhub.ui.theme.SensorAccelerometer
+import com.kia.sensorhub.viewmodel.AccelerometerViewModel
 import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,11 +1,11 @@
-package com.example.sensorhub.viewmodel
+package com.kia.sensorhub.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sensorhub.data.model.GyroscopeData
-import com.example.sensorhub.data.model.MagnetometerData
-import com.example.sensorhub.data.repository.SensorRepository
-import com.example.sensorhub.sensors.SensorInfo
+import com.kia.sensorhub.data.model.GyroscopeData
+import com.kia.sensorhub.data.model.MagnetometerData
+import com.kia.sensorhub.data.repository.SensorRepository
+import com.kia.sensorhub.sensors.SensorInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

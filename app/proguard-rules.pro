@@ -15,7 +15,7 @@
 -dontwarn androidx.compose.**
 
 # Keep sensor data classes
--keep class com.example.sensorhub.data.model.** { *; }
+-keep class com.kia.sensorhub.data.model.** { *; }
 
 # Retain line numbers for debugging
 -keepattributes SourceFile,LineNumberTable

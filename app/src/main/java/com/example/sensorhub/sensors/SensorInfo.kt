@@ -1,4 +1,4 @@
-package com.example.sensorhub.sensors
+package com.kia.sensorhub.sensors
 
 /**
  * Sensor information data class

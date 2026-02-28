@@ -1,4 +1,4 @@
-package com.example.sensorhub.data.database
+package com.kia.sensorhub.data.database
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase

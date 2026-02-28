@@ -1,8 +1,8 @@
-package com.example.sensorhub.analytics
+package com.kia.sensorhub.analytics
 
 import android.content.Context
 import android.os.Bundle
-import com.example.sensorhub.utils.ErrorHandler
+import com.kia.sensorhub.utils.ErrorHandler
 
 /**
  * Analytics Manager

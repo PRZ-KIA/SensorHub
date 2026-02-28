@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.sensorhub"
+    namespace = "com.kia.sensorhub"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.sensorhub"
+        applicationId = "com.kia.sensorhub"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

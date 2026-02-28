@@ -1,9 +1,9 @@
-package com.example.sensorhub.workers
+package com.kia.sensorhub.workers
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.*
-import com.example.sensorhub.data.repository.SensorRepository
+import com.kia.sensorhub.data.repository.SensorRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.take

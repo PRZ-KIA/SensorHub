@@ -1,4 +1,4 @@
-package com.example.sensorhub.ui.screens
+package com.kia.sensorhub.ui.screens
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
@@ -20,12 +20,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.sensorhub.ui.components.SensorCard
-import com.example.sensorhub.ui.components.SensorInfoDialog
-import com.example.sensorhub.ui.theme.SensorGyroscope
-import com.example.sensorhub.ui.theme.SensorMagnetometer
-import com.example.sensorhub.viewmodel.GyroscopeViewModel
-import com.example.sensorhub.viewmodel.MagnetometerViewModel
+import com.kia.sensorhub.ui.components.SensorCard
+import com.kia.sensorhub.ui.components.SensorInfoDialog
+import com.kia.sensorhub.ui.theme.SensorGyroscope
+import com.kia.sensorhub.ui.theme.SensorMagnetometer
+import com.kia.sensorhub.viewmodel.GyroscopeViewModel
+import com.kia.sensorhub.viewmodel.MagnetometerViewModel
 import kotlin.math.cos
 import kotlin.math.sin
 

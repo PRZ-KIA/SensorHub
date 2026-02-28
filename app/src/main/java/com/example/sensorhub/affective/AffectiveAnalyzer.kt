@@ -1,6 +1,6 @@
-package com.example.sensorhub.affective
+package com.kia.sensorhub.affective
 
-import com.example.sensorhub.data.model.*
+import com.kia.sensorhub.data.model.*
 import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt

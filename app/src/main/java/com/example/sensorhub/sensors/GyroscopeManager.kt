@@ -1,11 +1,11 @@
-package com.example.sensorhub.sensors
+package com.kia.sensorhub.sensors
 
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import com.example.sensorhub.data.model.GyroscopeData
+import com.kia.sensorhub.data.model.GyroscopeData
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

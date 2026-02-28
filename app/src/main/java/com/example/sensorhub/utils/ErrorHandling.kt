@@ -1,4 +1,4 @@
-package com.example.sensorhub.utils
+package com.kia.sensorhub.utils
 
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope

@@ -1,4 +1,4 @@
-package com.example.sensorhub.data.model
+package com.kia.sensorhub.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

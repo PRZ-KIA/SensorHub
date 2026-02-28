@@ -1,9 +1,9 @@
-package com.example.sensorhub.viewmodel
+package com.kia.sensorhub.viewmodel
 
 import app.cash.turbine.test
-import com.example.sensorhub.data.model.AccelerometerData
-import com.example.sensorhub.data.repository.SensorRepository
-import com.example.sensorhub.sensors.SensorInfo
+import com.kia.sensorhub.data.model.AccelerometerData
+import com.kia.sensorhub.data.repository.SensorRepository
+import com.kia.sensorhub.sensors.SensorInfo
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

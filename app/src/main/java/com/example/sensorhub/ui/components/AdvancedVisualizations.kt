@@ -1,4 +1,4 @@
-package com.example.sensorhub.ui.components
+package com.kia.sensorhub.ui.components
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas

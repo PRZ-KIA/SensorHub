@@ -1,4 +1,4 @@
-package com.example.sensorhub.ui.theme
+package com.kia.sensorhub.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

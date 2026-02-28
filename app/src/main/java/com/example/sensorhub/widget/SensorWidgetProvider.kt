@@ -1,4 +1,4 @@
-package com.example.sensorhub.widget
+package com.kia.sensorhub.widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -7,8 +7,8 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
-import com.example.sensorhub.MainActivity
-import com.example.sensorhub.R
+import com.kia.sensorhub.MainActivity
+import com.kia.sensorhub.R
 
 /**
  * Home Screen Widget for SensorHub
@@ -71,7 +71,7 @@ class SensorWidgetProvider : AppWidgetProvider() {
             sensorType: String
         ) {
             val intent = Intent(context, MainActivity::class.java).apply {
-                action = "com.example.sensorhub.OPEN_SENSOR"
+                action = "com.kia.sensorhub.OPEN_SENSOR"
                 putExtra("sensor_type", sensorType)
             }
             

@@ -1,10 +1,10 @@
-package com.example.sensorhub.di
+package com.kia.sensorhub.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.sensorhub.data.database.SensorDao
-import com.example.sensorhub.data.database.SensorDatabase
-import com.example.sensorhub.sensors.*
+import com.kia.sensorhub.data.database.SensorDao
+import com.kia.sensorhub.data.database.SensorDatabase
+import com.kia.sensorhub.sensors.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,8 +1,8 @@
-package com.example.sensorhub
+package com.kia.sensorhub
 
-import com.example.sensorhub.data.model.AccelerometerData
-import com.example.sensorhub.testing.MockDataGenerator
-import com.example.sensorhub.utils.*
+import com.kia.sensorhub.data.model.AccelerometerData
+import com.kia.sensorhub.testing.MockDataGenerator
+import com.kia.sensorhub.utils.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*

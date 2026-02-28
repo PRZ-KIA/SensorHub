@@ -1,4 +1,4 @@
-package com.example.sensorhub.data.model
+package com.kia.sensorhub.data.model
 
 /**
  * Data models for Light Sensor
