@@ -1,27 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- External Files Directory -->
-    <external-files-path
-        name="external_files"
-        path="." />
-    
     <!-- Export files directory -->
     <external-files-path
         name="exports"
         path="exports/" />
-    
-    <!-- Cache directory for temporary files -->
+
+    <!-- Share cache directory for temporary exported files -->
     <external-cache-path
-        name="external_cache"
-        path="." />
-    
-    <!-- Internal files directory -->
-    <files-path
-        name="files"
-        path="." />
-    
-    <!-- Internal cache directory -->
-    <cache-path
-        name="cache"
-        path="." />
+        name="share_cache"
+        path="share/" />
 </paths>

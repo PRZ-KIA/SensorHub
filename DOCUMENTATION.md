@@ -38,8 +38,7 @@ SensorHub follows the MVVM (Model-View-ViewModel) architecture pattern with clea
 Handles all data operations including sensor readings and database persistence.
 
 **Key Classes:**
-- `SensorData.kt` - Data models for all sensors
-- `SensorReading.kt` - Room entity for database storage
+- `SensorData.kt` - Data models for all sensors, including the `SensorReading` Room entity
 - `SensorDao.kt` - Database access interface
 - `SensorDatabase.kt` - Room database definition
 
