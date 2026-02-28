@@ -340,4 +340,36 @@ class ExtendedUnitTests {
         
         assertNull(result)
     }
+
+    @Test
+    fun `isRecent uses injected time provider with boundary values`() {
+        ValidationUtils.setCurrentTimeProvider { 10_000L }
+
+        assertTrue(ValidationUtils.isRecent(timestamp = 10_000L, withinMs = 0L))
+        assertTrue(ValidationUtils.isRecent(timestamp = 9_900L, withinMs = 100L))
+        assertFalse(ValidationUtils.isRecent(timestamp = 9_899L, withinMs = 100L))
+
+        ValidationUtils.resetCurrentTimeProvider()
+    }
+
+    @Test
+    fun `isRecent returns false for negative window`() {
+        ValidationUtils.setCurrentTimeProvider { 5_000L }
+
+        assertFalse(ValidationUtils.isRecent(timestamp = 5_000L, withinMs = -1L))
+
+        ValidationUtils.resetCurrentTimeProvider()
+    }
+
+    @Test
+    fun `hasValidExtension normalizes case and dot-prefixed allowed extensions`() {
+        assertTrue(ValidationUtils.hasValidExtension("report.CSV", listOf(".csv")))
+        assertFalse(ValidationUtils.hasValidExtension("report", listOf("csv")))
+    }
+
+    @Test
+    fun `isWithinRange rejects reversed boundaries`() {
+        assertFalse(ValidationUtils.isWithinRange(timestamp = 5L, startTime = 10L, endTime = 0L))
+    }
+
 }

@@ -12,6 +12,28 @@ import androidx.core.content.ContextCompat
  * Permission Manager for handling runtime permissions
  */
 class PermissionManager(private val activity: ComponentActivity) {
+
+    private var singlePermissionCallbacks: Pair<() -> Unit, () -> Unit>? = null
+    private var multiPermissionCallbacks: Pair<() -> Unit, (List<String>) -> Unit>? = null
+
+    private val singlePermissionLauncher = activity.registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        val callbacks = singlePermissionCallbacks ?: return@registerForActivityResult
+        if (isGranted) callbacks.first() else callbacks.second()
+    }
+
+    private val multiPermissionLauncher = activity.registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { results ->
+        val callbacks = multiPermissionCallbacks ?: return@registerForActivityResult
+        val denied = results.filterValues { granted -> !granted }.keys.toList()
+        if (denied.isEmpty()) {
+            callbacks.first()
+        } else {
+            callbacks.second(denied)
+        }
+    }
     
     /**
      * Location permissions
@@ -47,10 +69,7 @@ class PermissionManager(private val activity: ComponentActivity) {
             Manifest.permission.READ_MEDIA_AUDIO
         )
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> emptyArray()
-        else -> arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
+        else -> arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
     
     /**
@@ -85,11 +104,8 @@ class PermissionManager(private val activity: ComponentActivity) {
      * Check if foreground location permission is granted (fine OR coarse)
      */
     fun hasForegroundLocationPermission(): Boolean {
-        return activity.hasPermissions(
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) || activity.hasPermissions(
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
+        return activity.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
+                activity.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
     }
 
     /**
@@ -136,16 +152,13 @@ class PermissionManager(private val activity: ComponentActivity) {
         onGranted: () -> Unit,
         onDenied: () -> Unit
     ) {
-        val launcher = activity.registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted ->
-            if (isGranted) {
-                onGranted()
-            } else {
-                onDenied()
-            }
+        if (hasPermissions(arrayOf(permission))) {
+            onGranted()
+            return
         }
-        launcher.launch(permission)
+
+        singlePermissionCallbacks = onGranted to onDenied
+        singlePermissionLauncher.launch(permission)
     }
     
     /**
@@ -156,17 +169,24 @@ class PermissionManager(private val activity: ComponentActivity) {
         onAllGranted: () -> Unit,
         onDenied: (List<String>) -> Unit
     ) {
-        val launcher = activity.registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { results ->
-            val denied = results.filter { !it.value }.keys.toList()
-            if (denied.isEmpty()) {
-                onAllGranted()
-            } else {
-                onDenied(denied)
-            }
+        val normalizedPermissions = permissions
+            .filter { it.isNotBlank() }
+            .distinct()
+            .toTypedArray()
+
+        if (normalizedPermissions.isEmpty()) {
+            onAllGranted()
+            return
         }
-        launcher.launch(permissions)
+
+        val denied = normalizedPermissions.filterNot { hasPermissions(arrayOf(it)) }
+        if (denied.isEmpty()) {
+            onAllGranted()
+            return
+        }
+
+        multiPermissionCallbacks = onAllGranted to onDenied
+        multiPermissionLauncher.launch(denied.toTypedArray())
     }
     
     /**
@@ -270,7 +290,6 @@ object PermissionUtils {
             Manifest.permission.RECORD_AUDIO -> "Microphone"
             Manifest.permission.POST_NOTIFICATIONS -> "Notifications"
             Manifest.permission.READ_EXTERNAL_STORAGE -> "Storage (Read)"
-            Manifest.permission.WRITE_EXTERNAL_STORAGE -> "Storage (Write)"
             Manifest.permission.READ_MEDIA_IMAGES -> "Photos and Images"
             Manifest.permission.READ_MEDIA_VIDEO -> "Videos"
             Manifest.permission.READ_MEDIA_AUDIO -> "Music and Audio"
@@ -298,7 +317,6 @@ object PermissionUtils {
                 "Allows app to show sensor alerts and insights"
             
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_MEDIA_IMAGES,
             Manifest.permission.READ_MEDIA_VIDEO,
             Manifest.permission.READ_MEDIA_AUDIO ->
@@ -319,7 +337,6 @@ object PermissionUtils {
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_MEDIA_IMAGES,
             Manifest.permission.READ_MEDIA_VIDEO,
             Manifest.permission.READ_MEDIA_AUDIO,

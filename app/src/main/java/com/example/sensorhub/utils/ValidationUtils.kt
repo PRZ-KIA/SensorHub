@@ -2,11 +2,25 @@ package com.kia.sensorhub.utils
 
 import android.util.Patterns
 import java.util.regex.Pattern
+import java.util.Locale
 
 /**
  * Comprehensive Validation Utilities
  */
 object ValidationUtils {
+
+    @Volatile
+    private var currentTimeProvider: () -> Long = { System.currentTimeMillis() }
+
+    fun setCurrentTimeProvider(provider: (() -> Long)?) {
+        currentTimeProvider = provider ?: { System.currentTimeMillis() }
+    }
+
+    fun resetCurrentTimeProvider() {
+        currentTimeProvider = { System.currentTimeMillis() }
+    }
+
+    private fun now(): Long = currentTimeProvider()
     
     // ========== Sensor Data Validation ==========
     
@@ -84,7 +98,7 @@ object ValidationUtils {
      * Validate proximity distance (0 to maxRange)
      */
     fun isValidProximity(distance: Float, maxRange: Float): Boolean {
-        return distance.isFinite() && distance >= 0 && distance <= maxRange
+        return distance.isFinite() && maxRange.isFinite() && maxRange >= 0f && distance in 0f..maxRange
     }
     
     /**
@@ -137,14 +151,14 @@ object ValidationUtils {
      * Check if string has minimum length
      */
     fun hasMinLength(text: String?, minLength: Int): Boolean {
-        return text != null && text.length >= minLength
+        return text != null && minLength >= 0 && text.length >= minLength
     }
     
     /**
      * Check if string has maximum length
      */
     fun hasMaxLength(text: String?, maxLength: Int): Boolean {
-        return text != null && text.length <= maxLength
+        return text != null && maxLength >= 0 && text.length <= maxLength
     }
     
     /**
@@ -181,14 +195,14 @@ object ValidationUtils {
      * Check if list has minimum size
      */
     fun <T> hasMinSize(list: List<T>?, minSize: Int): Boolean {
-        return list != null && list.size >= minSize
+        return list != null && minSize >= 0 && list.size >= minSize
     }
     
     /**
      * Check if list has maximum size
      */
     fun <T> hasMaxSize(list: List<T>?, maxSize: Int): Boolean {
-        return list != null && list.size <= maxSize
+        return list != null && maxSize >= 0 && list.size <= maxSize
     }
     
     /**
@@ -212,7 +226,14 @@ object ValidationUtils {
      */
     fun hasValidExtension(fileName: String, allowedExtensions: List<String>): Boolean {
         val extension = fileName.substringAfterLast('.', "")
-        return extension.isNotEmpty() && allowedExtensions.contains(extension.lowercase())
+        if (extension.isEmpty()) return false
+        val normalizedAllowedExtensions = allowedExtensions
+            .asSequence()
+            .map { it.trim().lowercase(Locale.ROOT).removePrefix(".") }
+            .filter { it.isNotEmpty() }
+            .toSet()
+
+        return extension.lowercase(Locale.ROOT) in normalizedAllowedExtensions
     }
     
     /**
@@ -235,14 +256,14 @@ object ValidationUtils {
      * Check if timestamp is in the past
      */
     fun isInPast(timestamp: Long): Boolean {
-        return timestamp < System.currentTimeMillis()
+        return timestamp < now()
     }
     
     /**
      * Check if timestamp is in the future
      */
     fun isInFuture(timestamp: Long): Boolean {
-        return timestamp > System.currentTimeMillis()
+        return timestamp > now()
     }
     
     /**
@@ -250,7 +271,7 @@ object ValidationUtils {
      */
     fun isRecent(timestamp: Long, withinMs: Long): Boolean {
         if (withinMs < 0) return false
-        val delta = System.currentTimeMillis() - timestamp
+        val delta = now() - timestamp
         return delta in 0..withinMs
     }
     
@@ -258,6 +279,7 @@ object ValidationUtils {
      * Check if timestamp is within range
      */
     fun isWithinRange(timestamp: Long, startTime: Long, endTime: Long): Boolean {
+        if (startTime > endTime) return false
         return timestamp in startTime..endTime
     }
     
@@ -292,7 +314,7 @@ object ValidationUtils {
      * Sanitize string input
      */
     fun sanitizeString(text: String?): String {
-        return text?.trim() ?: ""
+        return text?.trim()?.replace(Regex("\\s+"), " ") ?: ""
     }
     
     /**
