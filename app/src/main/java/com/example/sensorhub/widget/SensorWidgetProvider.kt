@@ -3,6 +3,7 @@ package com.example.sensorhub.widget
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
@@ -148,9 +149,19 @@ class WidgetUpdateService(context: Context) {
             apply()
         }
         
-        // Trigger widget update
+        // Trigger widget update for all existing widget instances
+        val widgetManager = AppWidgetManager.getInstance(context)
+        val widgetIds = widgetManager.getAppWidgetIds(
+            ComponentName(context, SensorWidgetProvider::class.java)
+        )
+
+        if (widgetIds.isEmpty()) {
+            return
+        }
+
         val intent = Intent(context, SensorWidgetProvider::class.java).apply {
             action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds)
         }
         context.sendBroadcast(intent)
     }
