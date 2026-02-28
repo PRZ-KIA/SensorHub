@@ -6,7 +6,8 @@ import androidx.work.*
 import com.example.sensorhub.data.repository.SensorRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import java.util.concurrent.TimeUnit
 
 /**
@@ -86,43 +87,27 @@ class SensorMonitoringWorker @AssistedInject constructor(
     }
     
     private suspend fun collectAccelerometerData(sampleCount: Int) {
-        val samples = mutableListOf<com.example.sensorhub.data.model.AccelerometerData>()
-        
-        repository.getAccelerometerFlow()
-            .collect { data ->
-                samples.add(data)
-                if (samples.size >= sampleCount) {
-                    // Save collected samples
-                    repository.saveSensorReadings(samples)
-                    return@collect
-                }
-            }
+        val samples = repository.getAccelerometerFlow()
+            .take(sampleCount)
+            .toList()
+
+        repository.saveSensorReadings(samples)
     }
     
     private suspend fun collectGyroscopeData(sampleCount: Int) {
-        val samples = mutableListOf<com.example.sensorhub.data.model.GyroscopeData>()
-        
-        repository.getGyroscopeFlow()
-            .collect { data ->
-                samples.add(data)
-                if (samples.size >= sampleCount) {
-                    repository.saveSensorReadings(samples)
-                    return@collect
-                }
-            }
+        val samples = repository.getGyroscopeFlow()
+            .take(sampleCount)
+            .toList()
+
+        repository.saveSensorReadings(samples)
     }
     
     private suspend fun collectMagnetometerData(sampleCount: Int) {
-        val samples = mutableListOf<com.example.sensorhub.data.model.MagnetometerData>()
-        
-        repository.getMagnetometerFlow()
-            .collect { data ->
-                samples.add(data)
-                if (samples.size >= sampleCount) {
-                    repository.saveSensorReadings(samples)
-                    return@collect
-                }
-            }
+        val samples = repository.getMagnetometerFlow()
+            .take(sampleCount)
+            .toList()
+
+        repository.saveSensorReadings(samples)
     }
 }
 
