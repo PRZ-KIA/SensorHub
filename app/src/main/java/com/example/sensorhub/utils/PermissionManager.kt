@@ -16,17 +16,18 @@ class PermissionManager(private val activity: ComponentActivity) {
     /**
      * Location permissions
      */
-    val locationPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_BACKGROUND_LOCATION
-        )
+    val locationPermissions = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    /**
+     * Background location permission (request separately on API 29+)
+     */
+    val backgroundLocationPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
     } else {
-        arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
+        emptyArray()
     }
     
     /**
@@ -78,6 +79,17 @@ class PermissionManager(private val activity: ComponentActivity) {
      */
     fun hasLocationPermission(): Boolean {
         return hasPermissions(locationPermissions)
+    }
+
+    /**
+     * Check if background location permission is granted
+     */
+    fun hasBackgroundLocationPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            hasPermissions(backgroundLocationPermissions)
+        } else {
+            true
+        }
     }
     
     /**
