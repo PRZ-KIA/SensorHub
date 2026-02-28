@@ -1,286 +1,181 @@
-# SensorHub - Educational Mobile Sensor Platform
+# SensorHub
+
+> Edukacyjna aplikacja Android do nauki integracji sensorów, architektury MVVM i nowoczesnego UI w Jetpack Compose.
 
 ![Platform](https://img.shields.io/badge/Platform-Android-green.svg)
 ![Language](https://img.shields.io/badge/Language-Kotlin-purple.svg)
 ![MinSDK](https://img.shields.io/badge/MinSDK-26-orange.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
-## 📱 Overview
+## Spis treści
+- [O projekcie](#o-projekcie)
+- [Najważniejsze funkcje](#najważniejsze-funkcje)
+- [Architektura i przepływ danych](#architektura-i-przepływ-danych)
+- [Struktura katalogów](#struktura-katalogów)
+- [Wymagania](#wymagania)
+- [Szybki start](#szybki-start)
+- [Uruchamianie i testowanie](#uruchamianie-i-testowanie)
+- [Jak rozwijać projekt](#jak-rozwijać-projekt)
+- [Na co uważać](#na-co-uwazać)
+- [Tech stack](#tech-stack)
 
-SensorHub is a comprehensive educational Android application designed to demonstrate and teach mobile sensor integration, user interaction patterns, UI/UX design, and affective computing. Built with modern Android development practices, it serves as a practical learning platform for students studying mobile development.
+## O projekcie
 
-## ✨ Features
+**SensorHub** to projekt edukacyjny, który pokazuje jak budować nowoczesną aplikację Android z wykorzystaniem:
+- odczytów z fizycznych sensorów urządzenia,
+- reaktywnego strumieniowania danych (`Flow`),
+- trwałego zapisu historii pomiarów (`Room`),
+- dependency injection (`Hilt`),
+- UI opartego o `Jetpack Compose`.
 
-### 🎯 Sensor Integration
-- **Accelerometer** - Measure device acceleration and movement
-- **Gyroscope** - Track device rotation and orientation
-- **Magnetometer** - Detect magnetic field strength and compass heading
-- **Light Sensor** - Measure ambient light levels
-- **GPS** - Location tracking and geolocation
-- **Proximity Sensor** - Detect nearby objects
-- **Barometer** - Atmospheric pressure measurement
+Projekt jest dobrym punktem startowym dla osób uczących się Androida, bo zawiera pełny „pipeline” od warstwy sprzętowej aż po warstwę prezentacji.
 
-### 🎨 User Interactions
-- **Gesture Recognition** - Touch, swipe, pinch, rotate
-- **Voice Recognition** - Speech-to-text capabilities
-- **Haptic Feedback** - Vibration patterns and tactile responses
+## Najważniejsze funkcje
 
-### 💡 Affective Computing
-- **Emotion Analysis** - Analyze user emotional state from sensor data
-- **Behavior Patterns** - Track and visualize user interaction patterns
-- **Real-time Processing** - Live data analysis and visualization
+### Sensory
+- Akcelerometr
+- Żyroskop
+- Magnetometr
+- Czujnik światła
+- GPS
+- Czujnik zbliżeniowy
+- Barometr
 
-### 🎯 Technical Features
-- **Material Design 3** - Modern, adaptive UI
-- **Jetpack Compose** - Declarative UI framework
-- **MVVM Architecture** - Clean, testable code structure
-- **Room Database** - Local data persistence
-- **Hilt** - Dependency injection
-- **Coroutines & Flow** - Reactive data streams
+### Interakcje i UX
+- Gesty (dotyk, przesuwanie, pinch/zoom)
+- Rozpoznawanie głosu
+- Haptyka (wibracje)
 
-## 🏗️ Architecture
+### Dane i analityka
+- Historia pomiarów zapisywana lokalnie
+- Podstawowe analizy trendów i porównań
+- Eksport danych
 
-The app follows the MVVM (Model-View-ViewModel) architecture pattern:
+## Architektura i przepływ danych
 
-```
-app/
+Aplikacja wykorzystuje architekturę **MVVM** z wyraźnym podziałem odpowiedzialności.
+
+1. **`sensors/*Manager`**
+   - Nasłuchują danych z Android Sensor API i emitują je jako `Flow`.
+2. **`data/repository/SensorRepository`**
+   - Udostępnia dane do ViewModeli.
+   - Opcjonalnie zapisuje odczyty do bazy.
+3. **`viewmodel/*ViewModel`**
+   - Kolekcjonują strumienie, budują `uiState`, obsługują błędy.
+4. **`ui/screens` + Compose**
+   - Renderują aktualny stan i reagują na akcje użytkownika.
+
+Taki podział upraszcza testowanie, rozwój i utrzymanie kodu.
+
+## Struktura katalogów
+
+```text
+app/src/main/java/com/example/sensorhub/
+├── affective/          # Funkcje związane z affective computing
+├── analytics/          # Analityka i metryki
 ├── data/
-│   ├── model/          # Data classes
-│   ├── repository/     # Data repositories
-│   └── database/       # Room database
-├── sensors/            # Sensor managers
-├── viewmodel/          # ViewModels
+│   ├── database/       # Room: DAO, Database, migracje
+│   ├── export/         # Eksport danych
+│   ├── model/          # Modele danych sensorów
+│   ├── preferences/    # DataStore / ustawienia użytkownika
+│   └── repository/     # Repozytorium łączące warstwy
+├── di/                 # Moduły Hilt
+├── notifications/      # Obsługa powiadomień
+├── sensors/            # Managerowie sensorów
+├── service/            # Foreground service
 ├── ui/
-│   ├── screens/        # Compose screens
-│   ├── components/     # Reusable UI components
-│   ├── theme/          # Material Design theme
-│   └── navigation/     # Navigation setup
-├── utils/              # Utility classes
-├── affective/          # Affective computing module
-└── di/                 # Dependency injection
+│   ├── components/     # Komponenty wielokrotnego użycia
+│   ├── navigation/     # Route’y i struktura nawigacji
+│   ├── screens/        # Ekrany Compose
+│   ├── theme/          # Theme, kolory, typografia
+│   └── animations/     # Animacje UI
+├── utils/              # Narzędzia pomocnicze
+├── viewmodel/          # ViewModele
+├── workers/            # Zadania WorkManager
+├── MainActivity.kt
+└── SensorHubApplication.kt
 ```
 
-## 🚀 Getting Started
+## Wymagania
 
-### Prerequisites
-- Android Studio Hedgehog or later
-- JDK 17 or later
-- Android SDK 26+
-- Physical Android device (recommended for sensor testing)
+- Android Studio (najnowsza stabilna wersja)
+- JDK 17+
+- Android SDK (minSdk 26)
+- Urządzenie fizyczne (zalecane do testów sensorów)
 
-### Installation
+## Szybki start
 
-1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/sensorhub.git
+git clone <URL_REPOZYTORIUM>
 cd SensorHub
+./gradlew clean
+./gradlew assembleDebug
 ```
 
-2. Open the project in Android Studio
+Po udanym buildzie APK znajdziesz w:
 
-3. Sync Gradle dependencies:
-```
-File > Sync Project with Gradle Files
-```
-
-4. Run the app:
-```
-Run > Run 'app'
+```text
+app/build/outputs/apk/debug/app-debug.apk
 ```
 
-## 📚 Project Structure
+## Uruchamianie i testowanie
 
-### Key Components
-
-#### Sensors
-Each sensor has a dedicated manager class that provides:
-- Availability checking
-- Real-time data streaming via Flow
-- Sensor information retrieval
-
-Example:
-```kotlin
-class AccelerometerManager(context: Context) {
-    fun isAvailable(): Boolean
-    fun getAccelerometerFlow(): Flow<AccelerometerData>
-    fun getSensorInfo(): SensorInfo?
-}
+### Build
+```bash
+./gradlew build
 ```
 
-#### ViewModels
-ViewModels manage UI state and business logic:
-```kotlin
-@HiltViewModel
-class AccelerometerViewModel @Inject constructor(
-    private val repository: SensorRepository
-) : ViewModel() {
-    val uiState: StateFlow<AccelerometerUiState>
-    fun startMonitoring()
-    fun stopMonitoring()
-}
-```
-
-#### UI Screens
-Compose-based screens with Material Design 3:
-```kotlin
-@Composable
-fun AccelerometerScreen(
-    viewModel: AccelerometerViewModel = hiltViewModel()
-) {
-    // UI implementation
-}
-```
-
-## 🧪 Testing
-
-### Unit Tests
-Run unit tests:
+### Testy jednostkowe
 ```bash
 ./gradlew test
 ```
 
-### Instrumentation Tests
-Run UI tests:
+### Lint
 ```bash
-./gradlew connectedAndroidTest
+./gradlew lint
 ```
 
-## 📖 Educational Use
-
-This project is designed for educational purposes and includes:
-
-### Learning Objectives
-- Understanding Android sensor APIs
-- Implementing MVVM architecture
-- Working with Jetpack Compose
-- Reactive programming with Flow
-- Database operations with Room
-- Dependency injection with Hilt
-- Material Design 3 implementation
-
-### Suggested Exercises
-1. Add a new sensor (temperature, humidity)
-2. Implement custom visualizations
-3. Create gesture-based games
-4. Build affective computing models
-5. Add data export functionality
-6. Implement unit tests for ViewModels
-
-## 🔧 Technologies Used
-
-- **Kotlin** - Programming language
-- **Jetpack Compose** - UI framework
-- **Material Design 3** - Design system
-- **Hilt** - Dependency injection
-- **Room** - Local database
-- **Coroutines & Flow** - Asynchronous programming
-- **Navigation Compose** - Navigation
-- **ViewModel** - State management
-- **LiveData** - Observable data
-- **WorkManager** - Background tasks
-
-## 📝 Code Examples
-
-### Collecting Sensor Data
-```kotlin
-viewModelScope.launch {
-    repository.getAccelerometerFlow()
-        .collect { data ->
-            _uiState.value = _uiState.value.copy(
-                currentData = data
-            )
-        }
-}
+### Testy instrumentacyjne
+```bash
+./gradlew connectedCheck
 ```
 
-### Database Operations
-```kotlin
-suspend fun saveSensorReading(sensorData: SensorData) {
-    val reading = sensorData.toSensorReading()
-    sensorDao.insertReading(reading)
-}
-```
+## Jak rozwijać projekt
 
-### Compose UI
-```kotlin
-@Composable
-fun SensorCard(
-    label: String,
-    value: Float,
-    unit: String,
-    color: Color
-) {
-    Card {
-        Text("$label: $value $unit")
-    }
-}
-```
+### Dodanie nowego sensora (skrót)
+1. Dodaj model danych w `data/model`.
+2. Dodaj manager sensora w `sensors/` (emisja `Flow`).
+3. Rozszerz `SensorRepository` o nowe API.
+4. Dodaj ViewModel i ekran Compose.
+5. Dodaj route w `ui/navigation` i wpis do `NavHost`.
+6. W razie potrzeby dodaj persystencję do `Room`.
 
-## 🤝 Contributing
+### Dobre praktyki
+- Trzymaj logikę biznesową poza Composable.
+- Nie czytaj sensorów bezpośrednio w UI.
+- Każdy ekran powinien opierać się o jawny `uiState`.
+- Ograniczaj rozmiar historii danych w pamięci.
+- Sprawdzaj dostępność sensorów na urządzeniu.
 
-Contributions are welcome! Please follow these steps:
+## Na co uważać
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+- W repo istnieje również starsza/alternatywna przestrzeń nazw `com.kia.sensorhub`.
+  Główna aplikacja działa na `com.example.sensorhub`.
+- Część funkcji wymaga runtime permissions (np. lokalizacja, mikrofon, notyfikacje).
+- Nie wszystkie urządzenia mają wszystkie sensory – aplikacja to obsługuje, ale warto testować na różnych modelach.
 
-## 📄 License
+## Tech stack
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 👥 Authors
-
-- Educational Project - For learning purposes
-
-## 🙏 Acknowledgments
-
-- Android Developers Documentation
-- Material Design Guidelines
-- Jetpack Compose Documentation
-- Open source community
-
-## 📞 Support
-
-For questions or support:
-- Open an issue in the repository
-- Contact: support@sensorhub.edu
-- Documentation: docs.sensorhub.edu
-
-## 🗺️ Roadmap
-
-### Phase 1 (Current)
-- [x] Basic sensor integration
-- [x] MVVM architecture
-- [x] Jetpack Compose UI
-- [ ] Complete all sensor implementations
-
-### Phase 2
-- [ ] Gesture recognition system
-- [ ] Voice commands
-- [ ] Haptic feedback patterns
-- [ ] Advanced visualizations
-
-### Phase 3
-- [ ] Affective computing module
-- [ ] Machine learning integration
-- [ ] Data export/import
-- [ ] Cloud synchronization
-
-### Phase 4
-- [ ] Comprehensive testing
-- [ ] Performance optimization
-- [ ] Accessibility improvements
-- [ ] Documentation completion
-
-## 📊 Project Status
-
-🚧 **In Development** - Active development in progress
-
-Current Version: 1.0.0-alpha
-Last Updated: February 2026
+- **Kotlin**
+- **Jetpack Compose + Material 3**
+- **MVVM (ViewModel + StateFlow)**
+- **Coroutines + Flow**
+- **Room**
+- **Hilt**
+- **WorkManager**
+- **Navigation Compose**
 
 ---
 
-**Built with ❤️ for education and learning**
+Jeśli chcesz rozpocząć onboarding zespołu, najlepsza ścieżka to przejście przez jeden pełny przypadek: 
+**`AccelerometerManager -> SensorRepository -> AccelerometerViewModel -> AccelerometerScreen`**.
