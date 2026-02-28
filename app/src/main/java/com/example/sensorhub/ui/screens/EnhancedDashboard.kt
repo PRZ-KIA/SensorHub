@@ -1,4 +1,4 @@
-package com.example.sensorhub.ui.screens
+package com.kia.sensorhub.ui.screens
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -26,10 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.sensorhub.ui.animations.ParticleEffect
-import com.example.sensorhub.ui.animations.PulsatingGlow
-import com.example.sensorhub.ui.animations.ShimmerEffect
-import com.example.sensorhub.ui.theme.*
+import com.kia.sensorhub.ui.animations.ParticleEffect
+import com.kia.sensorhub.ui.animations.PulsatingGlow
+import com.kia.sensorhub.ui.animations.ShimmerEffect
+import com.kia.sensorhub.ui.theme.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

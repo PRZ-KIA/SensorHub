@@ -1,4 +1,4 @@
-package com.example.sensorhub.ui.components
+package com.kia.sensorhub.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.sensorhub.sensors.SensorInfo
+import com.kia.sensorhub.sensors.SensorInfo
 
 /**
  * Reusable card component for displaying sensor values

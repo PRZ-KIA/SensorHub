@@ -1,4 +1,4 @@
-package com.example.sensorhub
+package com.kia.sensorhub
 
 import android.app.Application
 import android.app.NotificationChannel
@@ -6,8 +6,8 @@ import android.app.NotificationManager
 import android.os.Build
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.example.sensorhub.notifications.NotificationHelper
-import com.example.sensorhub.utils.ErrorHandler
+import com.kia.sensorhub.notifications.NotificationHelper
+import com.kia.sensorhub.utils.ErrorHandler
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 

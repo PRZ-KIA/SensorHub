@@ -1,6 +1,6 @@
 package com.kia.sensorhub
 
-import com.example.sensorhub.utils.ValidationUtils
+import com.kia.sensorhub.utils.ValidationUtils
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

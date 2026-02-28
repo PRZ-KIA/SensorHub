@@ -1,4 +1,4 @@
-package com.example.sensorhub.ui.screens
+package com.kia.sensorhub.ui.screens
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
@@ -21,12 +21,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.example.sensorhub.data.model.GpsData
-import com.example.sensorhub.data.repository.SensorRepository
-import com.example.sensorhub.sensors.GpsManager
-import com.example.sensorhub.sensors.SensorInfo
-import com.example.sensorhub.ui.components.SensorCard
-import com.example.sensorhub.ui.components.SensorInfoDialog
+import com.kia.sensorhub.data.model.GpsData
+import com.kia.sensorhub.data.repository.SensorRepository
+import com.kia.sensorhub.sensors.GpsManager
+import com.kia.sensorhub.sensors.SensorInfo
+import com.kia.sensorhub.ui.components.SensorCard
+import com.kia.sensorhub.ui.components.SensorInfoDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,12 +1,12 @@
-package com.example.sensorhub.viewmodel
+package com.kia.sensorhub.viewmodel
 
 import app.cash.turbine.test
-import com.example.sensorhub.affective.*
-import com.example.sensorhub.data.model.GyroscopeData
-import com.example.sensorhub.data.model.MagnetometerData
-import com.example.sensorhub.data.repository.SensorRepository
-import com.example.sensorhub.sensors.SensorInfo
-import com.example.sensorhub.ui.screens.AffectiveViewModel
+import com.kia.sensorhub.affective.*
+import com.kia.sensorhub.data.model.GyroscopeData
+import com.kia.sensorhub.data.model.MagnetometerData
+import com.kia.sensorhub.data.repository.SensorRepository
+import com.kia.sensorhub.sensors.SensorInfo
+import com.kia.sensorhub.ui.screens.AffectiveViewModel
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -191,7 +191,7 @@ class AffectiveAnalyzerTest {
     fun `analyzeFromAccelerometer detects calm state with low movement`() {
         // Generate calm movement data
         repeat(30) {
-            val data = com.example.sensorhub.data.model.AccelerometerData(
+            val data = com.kia.sensorhub.data.model.AccelerometerData(
                 x = 0.1f,
                 y = 0.1f,
                 z = 9.8f,
@@ -210,7 +210,7 @@ class AffectiveAnalyzerTest {
     fun `analyzeFromAccelerometer detects active state with high movement`() {
         // Generate active movement data
         repeat(30) {
-            val data = com.example.sensorhub.data.model.AccelerometerData(
+            val data = com.kia.sensorhub.data.model.AccelerometerData(
                 x = (Math.random() * 10).toFloat(),
                 y = (Math.random() * 10).toFloat(),
                 z = (Math.random() * 10).toFloat(),
@@ -331,7 +331,7 @@ class AffectiveViewModelTest {
     fun `toggleAnalysis starts and stops analysis`() = runTest {
         assertFalse(viewModel.uiState.value.isAnalyzing)
         
-        val testData = com.example.sensorhub.data.model.AccelerometerData()
+        val testData = com.kia.sensorhub.data.model.AccelerometerData()
         every { repository.getAccelerometerFlow() } returns flowOf(testData)
         
         viewModel.toggleAnalysis()
@@ -346,7 +346,7 @@ class AffectiveViewModelTest {
     @Test
     fun `clearHistory clears emotion history`() = runTest {
         // Add some emotions first
-        val testData = com.example.sensorhub.data.model.AccelerometerData()
+        val testData = com.kia.sensorhub.data.model.AccelerometerData()
         every { repository.getAccelerometerFlow() } returns flowOf(testData)
         
         viewModel.toggleAnalysis()

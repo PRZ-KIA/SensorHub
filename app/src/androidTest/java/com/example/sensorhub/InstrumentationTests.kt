@@ -1,10 +1,10 @@
-package com.example.sensorhub
+package com.kia.sensorhub
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.sensorhub.ui.screens.HomeScreen
-import com.example.sensorhub.ui.theme.SensorHubTheme
+import com.kia.sensorhub.ui.screens.HomeScreen
+import com.kia.sensorhub.ui.theme.SensorHubTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -79,7 +79,7 @@ class InstrumentationTests {
     fun sensorCard_displaysCorrectValues() {
         composeTestRule.setContent {
             SensorHubTheme {
-                com.example.sensorhub.ui.components.SensorCard(
+                com.kia.sensorhub.ui.components.SensorCard(
                     label = "Test Sensor",
                     value = 9.8f,
                     unit = "m/s²",
@@ -130,7 +130,7 @@ class InstrumentationTests {
     fun settingsScreen_displaysAllSections() {
         composeTestRule.setContent {
             SensorHubTheme {
-                com.example.sensorhub.ui.screens.CompleteSettingsScreen()
+                com.kia.sensorhub.ui.screens.CompleteSettingsScreen()
             }
         }
         
@@ -152,7 +152,7 @@ class InstrumentationTests {
     fun settingsScreen_togglesWork() {
         composeTestRule.setContent {
             SensorHubTheme {
-                com.example.sensorhub.ui.screens.CompleteSettingsScreen()
+                com.kia.sensorhub.ui.screens.CompleteSettingsScreen()
             }
         }
         

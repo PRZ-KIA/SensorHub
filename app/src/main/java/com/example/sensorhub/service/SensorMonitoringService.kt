@@ -1,17 +1,17 @@
-package com.example.sensorhub.service
+package com.kia.sensorhub.service
 
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.example.sensorhub.MainActivity
-import com.example.sensorhub.R
-import com.example.sensorhub.data.repository.SensorRepository
-import com.example.sensorhub.sensors.AccelerometerManager
-import com.example.sensorhub.sensors.GyroscopeManager
-import com.example.sensorhub.sensors.MagnetometerManager
-import com.example.sensorhub.utils.ErrorHandler
+import com.kia.sensorhub.MainActivity
+import com.kia.sensorhub.R
+import com.kia.sensorhub.data.repository.SensorRepository
+import com.kia.sensorhub.sensors.AccelerometerManager
+import com.kia.sensorhub.sensors.GyroscopeManager
+import com.kia.sensorhub.sensors.MagnetometerManager
+import com.kia.sensorhub.utils.ErrorHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
@@ -45,8 +45,8 @@ class SensorMonitoringService : Service() {
         private const val NOTIFICATION_ID = 1001
         private const val CHANNEL_ID = "monitoring"
         
-        const val ACTION_START = "com.example.sensorhub.START_MONITORING"
-        const val ACTION_STOP = "com.example.sensorhub.STOP_MONITORING"
+        const val ACTION_START = "com.kia.sensorhub.START_MONITORING"
+        const val ACTION_STOP = "com.kia.sensorhub.STOP_MONITORING"
         const val EXTRA_SENSORS = "extra_sensors"
         
         /**

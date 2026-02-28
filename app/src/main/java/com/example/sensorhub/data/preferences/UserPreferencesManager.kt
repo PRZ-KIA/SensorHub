@@ -1,4 +1,4 @@
-package com.example.sensorhub.data.preferences
+package com.kia.sensorhub.data.preferences
 
 import android.content.Context
 import androidx.datastore.core.DataStore

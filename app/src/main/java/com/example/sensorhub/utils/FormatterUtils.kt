@@ -1,4 +1,4 @@
-package com.example.sensorhub.utils
+package com.kia.sensorhub.utils
 
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat

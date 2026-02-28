@@ -1,15 +1,15 @@
-package com.example.sensorhub.data.repository
+package com.kia.sensorhub.data.repository
 
-import com.example.sensorhub.data.database.SensorDao
-import com.example.sensorhub.data.model.AccelerometerData
-import com.example.sensorhub.data.model.GyroscopeData
-import com.example.sensorhub.data.model.MagnetometerData
-import com.example.sensorhub.data.model.SensorData
-import com.example.sensorhub.data.model.SensorReading
-import com.example.sensorhub.data.model.toSensorReading
-import com.example.sensorhub.sensors.AccelerometerManager
-import com.example.sensorhub.sensors.GyroscopeManager
-import com.example.sensorhub.sensors.MagnetometerManager
+import com.kia.sensorhub.data.database.SensorDao
+import com.kia.sensorhub.data.model.AccelerometerData
+import com.kia.sensorhub.data.model.GyroscopeData
+import com.kia.sensorhub.data.model.MagnetometerData
+import com.kia.sensorhub.data.model.SensorData
+import com.kia.sensorhub.data.model.SensorReading
+import com.kia.sensorhub.data.model.toSensorReading
+import com.kia.sensorhub.sensors.AccelerometerManager
+import com.kia.sensorhub.sensors.GyroscopeManager
+import com.kia.sensorhub.sensors.MagnetometerManager
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton

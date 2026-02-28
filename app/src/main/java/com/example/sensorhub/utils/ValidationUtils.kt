@@ -1,4 +1,4 @@
-package com.example.sensorhub.utils
+package com.kia.sensorhub.utils
 
 import android.util.Patterns
 import java.util.regex.Pattern

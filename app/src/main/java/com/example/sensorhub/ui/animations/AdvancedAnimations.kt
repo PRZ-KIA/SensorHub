@@ -1,4 +1,4 @@
-package com.example.sensorhub.ui.animations
+package com.kia.sensorhub.ui.animations
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*

@@ -1,9 +1,9 @@
-package com.example.sensorhub.viewmodel
+package com.kia.sensorhub.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sensorhub.data.model.AccelerometerData
-import com.example.sensorhub.data.repository.SensorRepository
+import com.kia.sensorhub.data.model.AccelerometerData
+import com.kia.sensorhub.data.repository.SensorRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -130,6 +130,6 @@ data class AccelerometerUiState(
     val isSavingEnabled: Boolean = false,
     val currentData: AccelerometerData = AccelerometerData(),
     val dataHistory: List<AccelerometerData> = emptyList(),
-    val sensorInfo: com.example.sensorhub.sensors.SensorInfo? = null,
+    val sensorInfo: com.kia.sensorhub.sensors.SensorInfo? = null,
     val error: String? = null
 )

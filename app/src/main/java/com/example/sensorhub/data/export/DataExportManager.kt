@@ -1,10 +1,10 @@
-package com.example.sensorhub.data.export
+package com.kia.sensorhub.data.export
 
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
-import com.example.sensorhub.data.model.SensorReading
-import com.example.sensorhub.utils.ErrorHandler
+import com.kia.sensorhub.data.model.SensorReading
+import com.kia.sensorhub.utils.ErrorHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray

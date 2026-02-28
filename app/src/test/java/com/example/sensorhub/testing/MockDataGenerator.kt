@@ -1,7 +1,7 @@
-package com.example.sensorhub.testing
+package com.kia.sensorhub.testing
 
-import com.example.sensorhub.data.model.*
-import com.example.sensorhub.data.database.SensorReading
+import com.kia.sensorhub.data.model.*
+import com.kia.sensorhub.data.database.SensorReading
 import kotlin.random.Random
 
 /**

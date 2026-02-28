@@ -1,4 +1,4 @@
-package com.example.sensorhub.sensors
+package com.kia.sensorhub.sensors
 
 import android.Manifest
 import android.content.Context
@@ -6,7 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Looper
 import androidx.core.content.ContextCompat
-import com.example.sensorhub.data.model.GpsData
+import com.kia.sensorhub.data.model.GpsData
 import com.google.android.gms.location.*
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.channels.awaitClose

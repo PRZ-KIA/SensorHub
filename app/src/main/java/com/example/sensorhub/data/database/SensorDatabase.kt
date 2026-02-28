@@ -1,8 +1,8 @@
-package com.example.sensorhub.data.database
+package com.kia.sensorhub.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.sensorhub.data.model.SensorReading
+import com.kia.sensorhub.data.model.SensorReading
 
 /**
  * Room database for SensorHub

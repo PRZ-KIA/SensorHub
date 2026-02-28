@@ -1,4 +1,4 @@
-package com.example.sensorhub
+package com.kia.sensorhub
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,10 +18,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.sensorhub.ui.navigation.Screen
-import com.example.sensorhub.ui.navigation.bottomNavItems
-import com.example.sensorhub.ui.screens.*
-import com.example.sensorhub.ui.theme.SensorHubTheme
+import com.kia.sensorhub.ui.navigation.Screen
+import com.kia.sensorhub.ui.navigation.bottomNavItems
+import com.kia.sensorhub.ui.screens.*
+import com.kia.sensorhub.ui.theme.SensorHubTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
