@@ -8,6 +8,7 @@ import android.os.Looper
 import androidx.core.content.ContextCompat
 import com.example.sensorhub.data.model.GpsData
 import com.google.android.gms.location.*
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -100,7 +101,7 @@ class GpsManager(private val context: Context) {
         }
         
         return try {
-            val location: Location? = fusedLocationClient.lastLocation.result
+            val location: Location? = fusedLocationClient.lastLocation.await()
             location?.let {
                 GpsData(
                     timestamp = System.currentTimeMillis(),
@@ -112,7 +113,7 @@ class GpsManager(private val context: Context) {
                     bearing = it.bearing
                 )
             }
-        } catch (e: SecurityException) {
+        } catch (e: Exception) {
             null
         }
     }
