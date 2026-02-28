@@ -1,52 +1,47 @@
 # Proponowane zadania po przeglądzie kodu
 
-## 1) Literówka / błąd nazewnictwa w instrukcji instalacji
-**Problem:** W `README.md` komenda przejścia do katalogu używa nazwy `sensorhub`, podczas gdy nazwa repozytorium i katalogu projektu to `SensorHub` (różnica wielkości liter jest istotna np. na Linuksie).
+## 1) Zadanie: poprawić literówkę w instrukcji uruchomienia
+**Problem:** W README użyto komendy `cd sensorhub`, a nazwa repozytorium/katalogu to `SensorHub`, co może psuć onboarding na systemach case-sensitive.
 
-**Zadanie:**
-- Poprawić instrukcję instalacji w `README.md`:
-  - z `cd sensorhub`
-  - na `cd SensorHub`.
+**Zakres zadania:**
+- Zmienić `cd sensorhub` na `cd SensorHub` w sekcji instalacji.
 
 **Kryteria akceptacji:**
-- Instrukcja clone + `cd` działa 1:1 po skopiowaniu komend na systemie z case-sensitive filesystem.
+- Użytkownik może skopiować komendy 1:1 z README i wejść do katalogu projektu bez ręcznej poprawki.
 
 ---
 
-## 2) Usunięcie błędu logicznego w walidacji czasu
-**Problem:** `ValidationUtils.isRecent(timestamp, withinMs)` uznaje przyszłe znaczniki czasu za „recent”, bo sprawdza tylko `now - timestamp <= withinMs`.
+## 2) Zadanie: usunąć błąd logiczny w walidacji czasu
+**Problem:** `ValidationUtils.isRecent(timestamp, withinMs)` zwraca `true` również dla timestampów z przyszłości, bo warunek sprawdza tylko `now - timestamp <= withinMs`.
 
-**Zadanie:**
-- Zmienić implementację tak, aby `isRecent` zwracało `true` tylko dla timestampów z przeszłości i tylko w zadanym oknie czasu.
-- Przykładowo: obliczyć `delta = now - timestamp` i wymagać `delta in 0..withinMs`.
+**Zakres zadania:**
+- Zmienić logikę na sprawdzanie dodatniego przedziału czasu, np. `delta in 0..withinMs`.
 
 **Kryteria akceptacji:**
-- Przyszły timestamp zwraca `false`.
-- Timestamp starszy niż `withinMs` zwraca `false`.
-- Timestamp z przeszłości mieszczący się w oknie zwraca `true`.
+- Przyszły timestamp => `false`.
+- Timestamp starszy niż okno => `false`.
+- Timestamp z przeszłości w oknie => `true`.
 
 ---
 
-## 3) Korekta rozbieżności dokumentacji względem kodu
-**Problem:** `DOCUMENTATION.md` wymienia plik `SensorReading.kt`, ale encja `SensorReading` jest zadeklarowana w `SensorData.kt`.
+## 3) Zadanie: skorygować rozbieżność dokumentacji względem kodu
+**Problem:** `DOCUMENTATION.md` wskazuje osobny plik `SensorReading.kt`, ale encja `SensorReading` jest zdefiniowana w `SensorData.kt`.
 
-**Zadanie:**
-- Zaktualizować sekcję „Key Classes” w `DOCUMENTATION.md`, aby odzwierciedlała rzeczywisty układ:
-  - `SensorData.kt` zawiera zarówno modele sensorów, jak i encję `SensorReading`.
-- (Opcjonalnie) dodać notkę, że wydzielenie `SensorReading` do osobnego pliku może być przyszłym refaktorem.
+**Zakres zadania:**
+- Uaktualnić sekcję „Data Module / Key Classes” tak, by odpowiadała aktualnemu układowi plików.
 
 **Kryteria akceptacji:**
-- Lista plików i opisów w dokumentacji zgadza się z aktualną strukturą kodu.
+- Opis klas i plików w dokumentacji pokrywa się ze stanem repozytorium.
 
 ---
 
-## 4) Ulepszenie testów jednostkowych
-**Problem:** `ExampleUnitTest` testuje wyłącznie `2 + 2 = 4`, co nie pokrywa logiki biznesowej aplikacji.
+## 4) Zadanie: ulepszyć test jednostkowy, który nie wnosi wartości
+**Problem:** `ExampleUnitTest` sprawdza wyłącznie `2 + 2 = 4`, przez co nie testuje logiki aplikacji.
 
-**Zadanie:**
-- Zastąpić/rozszerzyć test przykładowy o testy realnych reguł, np. dla `ValidationUtils.isRecent` (scenariusze: przeszłość w oknie, przeszłość poza oknem, przyszłość).
-- Upewnić się, że testy są deterministyczne (np. kontrola czasu przez wstrzykiwany zegar albo tolerancję czasową).
+**Zakres zadania:**
+- Zastąpić lub rozszerzyć test o przypadki dla `ValidationUtils.isRecent` (minimum: timestamp z przyszłości, z przeszłości w oknie, z przeszłości poza oknem).
+- Zapewnić deterministykę testów czasu (np. zegar wstrzykiwany, helper czasu, albo kontrola delta).
 
 **Kryteria akceptacji:**
-- Co najmniej 3 testy pokrywające granice i przypadki błędne dla logiki czasu.
-- Usunięcie lub zdegradowanie znaczenia testu „2+2”.
+- Co najmniej 3 asercje dla scenariuszy granicznych i negatywnych związanych z walidacją czasu.
+- Test przykładowy `2+2` usunięty lub zdegradowany do roli pomocniczej.
