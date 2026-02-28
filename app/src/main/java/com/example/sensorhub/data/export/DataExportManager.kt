@@ -230,9 +230,13 @@ class DataExportManager(private val context: Context) {
     }
     
     private fun getExportDirectory(): File {
-        val dir = File(context.getExternalFilesDir(null), "exports")
-        if (!dir.exists()) {
-            dir.mkdirs()
+        val baseDir = context.getExternalFilesDir(null) ?: context.filesDir
+        val dir = File(baseDir, "exports")
+        if (!dir.exists() && !dir.mkdirs()) {
+            ErrorHandler.logWarning(
+                tag = "DataExportManager",
+                message = "Failed to create exports directory: ${dir.absolutePath}"
+            )
         }
         return dir
     }
