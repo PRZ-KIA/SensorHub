@@ -1,6 +1,12 @@
 package com.example.sensorhub.utils
 
 import android.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -311,7 +317,7 @@ object DataSanitizer {
  */
 class Debouncer(private val waitMs: Long = 300) {
     private var lastActionTime: Long = 0
-    
+
     fun debounce(action: () -> Unit) {
         val currentTime = System.currentTimeMillis()
         if (currentTime - lastActionTime > waitMs) {
@@ -325,21 +331,26 @@ class Debouncer(private val waitMs: Long = 300) {
  * Throttler for sensor events
  */
 class Throttler(private val periodMs: Long = 1000) {
-    private var lastActionTime: Long = 0
-    private var isWaiting = false
-    
+    @Volatile private var isWaiting = false
+    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private var resetJob: Job? = null
+
+    @Synchronized
     fun throttle(action: () -> Unit) {
-        val currentTime = System.currentTimeMillis()
         if (!isWaiting) {
             action()
-            lastActionTime = currentTime
             isWaiting = true
-            
-            // Reset after period
-            kotlinx.coroutines.GlobalScope.launch {
-                kotlinx.coroutines.delay(periodMs)
+
+            resetJob?.cancel()
+            resetJob = scope.launch {
+                delay(periodMs)
                 isWaiting = false
             }
         }
+    }
+
+    fun cancel() {
+        resetJob?.cancel()
+        isWaiting = false
     }
 }

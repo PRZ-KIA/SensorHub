@@ -11,8 +11,10 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.io.FileWriter
-import java.text.SimpleDateFormat
-import java.util.*
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 /**
  * Data Export Manager
@@ -20,8 +22,9 @@ import java.util.*
  */
 class DataExportManager(private val context: Context) {
     
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US)
-    private val fileNameFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
+    private val outputZone = ZoneId.systemDefault()
+    private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS", Locale.US)
+    private val fileNameFormatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss", Locale.US)
     
     /**
      * Export data to CSV format
@@ -31,25 +34,24 @@ class DataExportManager(private val context: Context) {
         fileName: String? = null
     ): ExportResult = withContext(Dispatchers.IO) {
         try {
-            val file = createExportFile(fileName ?: generateFileName("csv"), "csv")
-            val writer = FileWriter(file)
-            
-            // Write CSV header
-            writer.append("ID,Sensor Type,X,Y,Z,Timestamp,Human Readable Time\n")
-            
-            // Write data rows
-            readings.forEach { reading ->
-                writer.append("${reading.id},")
-                writer.append("${reading.sensorType},")
-                writer.append("${reading.x},")
-                writer.append("${reading.y},")
-                writer.append("${reading.z},")
-                writer.append("${reading.timestamp},")
-                writer.append("${dateFormat.format(Date(reading.timestamp))}\n")
+            val file = createExportFile(fileName ?: generateFileName(), "csv")
+            FileWriter(file).use { writer ->
+                // Write CSV header
+                writer.append("ID,Sensor Type,X,Y,Z,Timestamp,Human Readable Time\n")
+
+                // Write data rows
+                readings.forEach { reading ->
+                    writer.append("${reading.id},")
+                    writer.append("${reading.sensorType},")
+                    writer.append("${reading.x},")
+                    writer.append("${reading.y},")
+                    writer.append("${reading.z},")
+                    writer.append("${reading.timestamp},")
+                    writer.append("${formatTimestamp(reading.timestamp)}\n")
+                }
+
+                writer.flush()
             }
-            
-            writer.flush()
-            writer.close()
             
             ExportResult.Success(
                 file = file,
@@ -76,10 +78,10 @@ class DataExportManager(private val context: Context) {
         prettyPrint: Boolean = true
     ): ExportResult = withContext(Dispatchers.IO) {
         try {
-            val file = createExportFile(fileName ?: generateFileName("json"), "json")
+            val file = createExportFile(fileName ?: generateFileName(), "json")
             
             val jsonObject = JSONObject().apply {
-                put("exportDate", dateFormat.format(Date()))
+                put("exportDate", formatNow())
                 put("recordCount", readings.size)
                 put("appVersion", "3.0.0-alpha")
                 
@@ -92,7 +94,7 @@ class DataExportManager(private val context: Context) {
                         put("y", reading.y)
                         put("z", reading.z)
                         put("timestamp", reading.timestamp)
-                        put("timestampReadable", dateFormat.format(Date(reading.timestamp)))
+                        put("timestampReadable", formatTimestamp(reading.timestamp))
                     }
                     dataArray.put(readingObj)
                 }
@@ -131,7 +133,7 @@ class DataExportManager(private val context: Context) {
         fileName: String? = null
     ): ExportResult = withContext(Dispatchers.IO) {
         try {
-            val file = createExportFile(fileName ?: generateFileName("stats_json"), "json")
+            val file = createExportFile(fileName ?: generateFileName(), "json")
             
             val stats = calculateStatistics(readings)
             val jsonObject = JSONObject(stats)
@@ -241,21 +243,28 @@ class DataExportManager(private val context: Context) {
         return dir
     }
     
-    private fun generateFileName(extension: String): String {
-        val timestamp = fileNameFormat.format(Date())
+    private fun generateFileName(): String {
+        val timestamp = fileNameFormatter.format(Instant.now().atZone(outputZone))
         return "sensorhub_export_$timestamp"
     }
     
+
+    private fun formatNow(): String =
+        dateTimeFormatter.format(Instant.now().atZone(outputZone))
+
+    private fun formatTimestamp(timestamp: Long): String =
+        dateTimeFormatter.format(Instant.ofEpochMilli(timestamp).atZone(outputZone))
+
     private fun calculateStatistics(readings: List<SensorReading>): Map<String, Any> {
         val grouped = readings.groupBy { it.sensorType }
         
         return mapOf(
-            "exportDate" to dateFormat.format(Date()),
+            "exportDate" to formatNow(),
             "totalReadings" to readings.size,
             "sensorTypes" to grouped.keys.toList(),
             "dateRange" to mapOf(
-                "oldest" to dateFormat.format(Date(readings.minOfOrNull { it.timestamp } ?: 0)),
-                "newest" to dateFormat.format(Date(readings.maxOfOrNull { it.timestamp } ?: 0))
+                "oldest" to formatTimestamp(readings.minOfOrNull { it.timestamp } ?: 0),
+                "newest" to formatTimestamp(readings.maxOfOrNull { it.timestamp } ?: 0)
             ),
             "byType" to grouped.mapValues { (_, typeReadings) ->
                 mapOf(
