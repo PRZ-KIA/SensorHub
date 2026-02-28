@@ -249,7 +249,9 @@ object ValidationUtils {
      * Check if timestamp is recent (within last N milliseconds)
      */
     fun isRecent(timestamp: Long, withinMs: Long): Boolean {
-        return System.currentTimeMillis() - timestamp <= withinMs
+        if (withinMs < 0) return false
+        val delta = System.currentTimeMillis() - timestamp
+        return delta in 0..withinMs
     }
     
     /**

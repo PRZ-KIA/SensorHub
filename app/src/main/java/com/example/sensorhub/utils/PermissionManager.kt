@@ -38,16 +38,16 @@ class PermissionManager(private val activity: ComponentActivity) {
     )
     
     /**
-     * Storage permissions (API < 33)
+     * Storage permissions by API level
      */
-    val storagePermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        arrayOf(
+    val storagePermissions = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> arrayOf(
             Manifest.permission.READ_MEDIA_IMAGES,
             Manifest.permission.READ_MEDIA_VIDEO,
             Manifest.permission.READ_MEDIA_AUDIO
         )
-    } else {
-        arrayOf(
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> emptyArray()
+        else -> arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
@@ -78,7 +78,18 @@ class PermissionManager(private val activity: ComponentActivity) {
      * Check if location permissions are granted
      */
     fun hasLocationPermission(): Boolean {
-        return hasPermissions(locationPermissions)
+        return hasForegroundLocationPermission()
+    }
+
+    /**
+     * Check if foreground location permission is granted (fine OR coarse)
+     */
+    fun hasForegroundLocationPermission(): Boolean {
+        return activity.hasPermissions(
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) || activity.hasPermissions(
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
     }
 
     /**
@@ -103,7 +114,7 @@ class PermissionManager(private val activity: ComponentActivity) {
      * Check if storage permissions are granted
      */
     fun hasStoragePermission(): Boolean {
-        return hasPermissions(storagePermissions)
+        return storagePermissions.isEmpty() || hasPermissions(storagePermissions)
     }
     
     /**
@@ -260,6 +271,9 @@ object PermissionUtils {
             Manifest.permission.POST_NOTIFICATIONS -> "Notifications"
             Manifest.permission.READ_EXTERNAL_STORAGE -> "Storage (Read)"
             Manifest.permission.WRITE_EXTERNAL_STORAGE -> "Storage (Write)"
+            Manifest.permission.READ_MEDIA_IMAGES -> "Photos and Images"
+            Manifest.permission.READ_MEDIA_VIDEO -> "Videos"
+            Manifest.permission.READ_MEDIA_AUDIO -> "Music and Audio"
             Manifest.permission.CAMERA -> "Camera"
             else -> permission.substringAfterLast('.')
         }
@@ -284,8 +298,11 @@ object PermissionUtils {
                 "Allows app to show sensor alerts and insights"
             
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE -> 
-                "Required for exporting sensor data to files"
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_MEDIA_IMAGES,
+            Manifest.permission.READ_MEDIA_VIDEO,
+            Manifest.permission.READ_MEDIA_AUDIO ->
+                "Required for reading exported sensor files"
             
             else -> "Required for app functionality"
         }
@@ -303,6 +320,9 @@ object PermissionUtils {
             Manifest.permission.CAMERA,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_MEDIA_IMAGES,
+            Manifest.permission.READ_MEDIA_VIDEO,
+            Manifest.permission.READ_MEDIA_AUDIO,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.WRITE_CONTACTS,
             Manifest.permission.READ_CALENDAR,

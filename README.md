@@ -73,7 +73,7 @@ app/
 1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/sensorhub.git
-cd sensorhub
+cd SensorHub
 ```
 
 2. Open the project in Android Studio
