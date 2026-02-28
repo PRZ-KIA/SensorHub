@@ -121,12 +121,4 @@ class SensorRepository @Inject constructor(
     suspend fun getReadingsCount(): Int = 
         sensorDao.getReadingsCount()
     
-    /**
-     * Save a list of sensor readings
-     */
-    suspend fun saveSensorReadings(readings: List<SensorData>) {
-        readings.forEach { reading ->
-            saveSensorReading(reading)
-        }
-    }
 }
