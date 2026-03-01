@@ -20,6 +20,7 @@ class PermissionManager(private val activity: ComponentActivity) {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         val callbacks = singlePermissionCallbacks ?: return@registerForActivityResult
+        singlePermissionCallbacks = null
         if (isGranted) callbacks.first() else callbacks.second()
     }
 
@@ -27,6 +28,7 @@ class PermissionManager(private val activity: ComponentActivity) {
         ActivityResultContracts.RequestMultiplePermissions()
     ) { results ->
         val callbacks = multiPermissionCallbacks ?: return@registerForActivityResult
+        multiPermissionCallbacks = null
         val denied = results.filterValues { granted -> !granted }.keys.toList()
         if (denied.isEmpty()) {
             callbacks.first()
