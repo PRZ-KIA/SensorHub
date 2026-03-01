@@ -2,7 +2,6 @@ package com.kia.sensorhub.affective
 
 import com.kia.sensorhub.data.model.*
 import kotlin.math.abs
-import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -50,9 +49,9 @@ data class AffectiveState(
  */
 class AffectiveAnalyzer {
     
-    private val accelerometerHistory = mutableListOf<AccelerometerData>()
-    private val gyroscopeHistory = mutableListOf<GyroscopeData>()
-    private val touchEventHistory = mutableListOf<TouchEvent>()
+    private val accelerometerHistory = ArrayDeque<AccelerometerData>(HISTORY_SIZE)
+    private val gyroscopeHistory = ArrayDeque<GyroscopeData>(HISTORY_SIZE)
+    private val touchEventHistory = ArrayDeque<TouchEvent>(HISTORY_SIZE)
     
     companion object {
         private const val HISTORY_SIZE = 100
@@ -65,10 +64,7 @@ class AffectiveAnalyzer {
      * Analyze emotion from accelerometer data
      */
     fun analyzeFromAccelerometer(data: AccelerometerData): DetectedEmotion {
-        accelerometerHistory.add(data)
-        if (accelerometerHistory.size > HISTORY_SIZE) {
-            accelerometerHistory.removeAt(0)
-        }
+        addWithBound(accelerometerHistory, data, HISTORY_SIZE)
         
         if (accelerometerHistory.size < 20) {
             return DetectedEmotion(EmotionType.UNKNOWN, 0.0f)
@@ -76,7 +72,7 @@ class AffectiveAnalyzer {
         
         val movementIntensity = calculateMovementIntensity(accelerometerHistory)
         val movementVariability = calculateVariability(
-            accelerometerHistory.map { it.magnitude }
+            accelerometerHistory.asSequence().map { it.magnitude }
         )
         
         // Determine emotion based on movement patterns
@@ -128,20 +124,19 @@ class AffectiveAnalyzer {
      * Analyze emotion from gyroscope data
      */
     fun analyzeFromGyroscope(data: GyroscopeData): DetectedEmotion {
-        gyroscopeHistory.add(data)
-        if (gyroscopeHistory.size > HISTORY_SIZE) {
-            gyroscopeHistory.removeAt(0)
-        }
+        addWithBound(gyroscopeHistory, data, HISTORY_SIZE)
         
         if (gyroscopeHistory.size < 20) {
             return DetectedEmotion(EmotionType.UNKNOWN, 0.0f)
         }
         
         val rotationStability = calculateRotationStability(gyroscopeHistory)
-        val rotationIntensity = gyroscopeHistory.takeLast(10)
-            .map { it.rotationRate }
-            .average()
-            .toFloat()
+        val lastSamples = gyroscopeHistory.takeLast(10)
+        val rotationIntensity = if (lastSamples.isNotEmpty()) {
+            lastSamples.asSequence().map { it.rotationRate }.average().toFloat()
+        } else {
+            0f
+        }
         
         return when {
             rotationStability > 0.8f && rotationIntensity < ROTATION_THRESHOLD_STABLE -> {
@@ -181,17 +176,21 @@ class AffectiveAnalyzer {
      * Analyze touch interaction patterns
      */
     fun analyzeFromTouchEvents(events: List<TouchEvent>): DetectedEmotion {
-        touchEventHistory.addAll(events)
-        if (touchEventHistory.size > HISTORY_SIZE) {
-            touchEventHistory.subList(0, touchEventHistory.size - HISTORY_SIZE).clear()
-        }
-        
+        events.forEach { addWithBound(touchEventHistory, it, HISTORY_SIZE) }
+
         if (touchEventHistory.size < 10) {
             return DetectedEmotion(EmotionType.UNKNOWN, 0.0f)
         }
-        
-        val avgDuration = touchEventHistory.map { it.duration }.average().toFloat()
-        val avgPressure = touchEventHistory.map { it.pressure }.average().toFloat()
+
+        var totalDuration = 0f
+        var totalPressure = 0f
+        touchEventHistory.forEach {
+            totalDuration += it.duration
+            totalPressure += it.pressure
+        }
+
+        val avgDuration = totalDuration / touchEventHistory.size
+        val avgPressure = totalPressure / touchEventHistory.size
         val frequency = touchEventHistory.size.toFloat() / 60f // per minute
         
         return when {
@@ -335,19 +334,21 @@ class AffectiveAnalyzer {
     /**
      * Calculate movement intensity from accelerometer history
      */
-    private fun calculateMovementIntensity(history: List<AccelerometerData>): Float {
+    private fun calculateMovementIntensity(history: Collection<AccelerometerData>): Float {
         if (history.size < 2) return 0f
         
+        val iterator = history.iterator()
+        var prev = iterator.next()
         var totalChange = 0f
-        for (i in 1 until history.size) {
-            val prev = history[i - 1]
-            val curr = history[i]
+        while (iterator.hasNext()) {
+            val curr = iterator.next()
             
             val dx = curr.x - prev.x
             val dy = curr.y - prev.y
             val dz = curr.z - prev.z
             
             totalChange += sqrt(dx * dx + dy * dy + dz * dz)
+            prev = curr
         }
         
         return totalChange / history.size
@@ -356,22 +357,31 @@ class AffectiveAnalyzer {
     /**
      * Calculate variability (standard deviation) of values
      */
-    private fun calculateVariability(values: List<Float>): Float {
-        if (values.isEmpty()) return 0f
-        
-        val mean = values.average().toFloat()
-        val variance = values.map { (it - mean).pow(2) }.average().toFloat()
-        
+    private fun calculateVariability(values: Sequence<Float>): Float {
+        var count = 0
+        var mean = 0.0
+        var m2 = 0.0
+
+        values.forEach { value ->
+            count++
+            val delta = value - mean
+            mean += delta / count
+            val delta2 = value - mean
+            m2 += delta * delta2
+        }
+
+        if (count == 0) return 0f
+        val variance = (m2 / count).toFloat()
         return sqrt(variance)
     }
     
     /**
      * Calculate rotation stability from gyroscope history
      */
-    private fun calculateRotationStability(history: List<GyroscopeData>): Float {
+    private fun calculateRotationStability(history: Collection<GyroscopeData>): Float {
         if (history.size < 2) return 0f
         
-        val variability = calculateVariability(history.map { it.rotationRate })
+        val variability = calculateVariability(history.asSequence().map { it.rotationRate })
         val maxVariability = 2.0f // rad/s
         
         // Higher stability = lower variability
@@ -385,6 +395,13 @@ class AffectiveAnalyzer {
         accelerometerHistory.clear()
         gyroscopeHistory.clear()
         touchEventHistory.clear()
+    }
+
+    private fun <T> addWithBound(buffer: ArrayDeque<T>, item: T, maxSize: Int) {
+        if (buffer.size >= maxSize) {
+            buffer.removeFirst()
+        }
+        buffer.addLast(item)
     }
 }
 
@@ -403,25 +420,19 @@ data class TouchEvent(
  * Emotion history tracker
  */
 class EmotionTracker {
-    private val emotionHistory = mutableListOf<DetectedEmotion>()
-    private val stateHistory = mutableListOf<AffectiveState>()
+    private val emotionHistory = ArrayDeque<DetectedEmotion>(MAX_HISTORY)
+    private val stateHistory = ArrayDeque<AffectiveState>(MAX_HISTORY)
     
     companion object {
         private const val MAX_HISTORY = 1000
     }
     
     fun addEmotion(emotion: DetectedEmotion) {
-        emotionHistory.add(emotion)
-        if (emotionHistory.size > MAX_HISTORY) {
-            emotionHistory.removeAt(0)
-        }
+        addWithBound(emotionHistory, emotion, MAX_HISTORY)
     }
     
     fun addState(state: AffectiveState) {
-        stateHistory.add(state)
-        if (stateHistory.size > MAX_HISTORY) {
-            stateHistory.removeAt(0)
-        }
+        addWithBound(stateHistory, state, MAX_HISTORY)
     }
     
     fun getEmotionHistory(): List<DetectedEmotion> = emotionHistory.toList()
@@ -457,5 +468,12 @@ class EmotionTracker {
     fun clear() {
         emotionHistory.clear()
         stateHistory.clear()
+    }
+
+    private fun <T> addWithBound(buffer: ArrayDeque<T>, item: T, maxSize: Int) {
+        if (buffer.size >= maxSize) {
+            buffer.removeFirst()
+        }
+        buffer.addLast(item)
     }
 }
