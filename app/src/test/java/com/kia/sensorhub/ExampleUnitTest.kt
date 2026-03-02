@@ -1,17 +1,24 @@
 package com.kia.sensorhub
 
 import com.kia.sensorhub.utils.ValidationUtils
+import org.junit.After
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ExampleUnitTest {
+    @After
+    fun tearDown() {
+        ValidationUtils.resetCurrentTimeProvider()
+    }
+
     @Test
     fun isRecent_returnsFalseForFutureTimestamp() {
-        val now = System.currentTimeMillis()
+        val fixedNow = 1_000_000L
+        ValidationUtils.setCurrentTimeProvider { fixedNow }
 
         val result = ValidationUtils.isRecent(
-            timestamp = now + 1_000,
+            timestamp = fixedNow + 1_000,
             withinMs = 5_000
         )
 
@@ -20,10 +27,11 @@ class ExampleUnitTest {
 
     @Test
     fun isRecent_returnsTrueForTimestampInWindow() {
-        val now = System.currentTimeMillis()
+        val fixedNow = 1_000_000L
+        ValidationUtils.setCurrentTimeProvider { fixedNow }
 
         val result = ValidationUtils.isRecent(
-            timestamp = now - 1_000,
+            timestamp = fixedNow - 1_000,
             withinMs = 5_000
         )
 
@@ -32,13 +40,53 @@ class ExampleUnitTest {
 
     @Test
     fun isRecent_returnsFalseForTimestampOutsideWindow() {
-        val now = System.currentTimeMillis()
+        val fixedNow = 1_000_000L
+        ValidationUtils.setCurrentTimeProvider { fixedNow }
 
         val result = ValidationUtils.isRecent(
-            timestamp = now - 10_000,
+            timestamp = fixedNow - 10_000,
             withinMs = 5_000
         )
 
         assertFalse(result)
+    }
+
+    @Test
+    fun isRecent_returnsTrueWhenDeltaEqualsZero() {
+        val fixedNow = 1_000_000L
+        ValidationUtils.setCurrentTimeProvider { fixedNow }
+
+        assertTrue(
+            ValidationUtils.isRecent(
+                timestamp = fixedNow,
+                withinMs = 5_000
+            )
+        )
+    }
+
+    @Test
+    fun isRecent_returnsTrueWhenDeltaEqualsWindowBoundary() {
+        val fixedNow = 1_000_000L
+        ValidationUtils.setCurrentTimeProvider { fixedNow }
+
+        assertTrue(
+            ValidationUtils.isRecent(
+                timestamp = fixedNow - 5_000,
+                withinMs = 5_000
+            )
+        )
+    }
+
+    @Test
+    fun isRecent_returnsFalseForNegativeWindow() {
+        val fixedNow = 1_000_000L
+        ValidationUtils.setCurrentTimeProvider { fixedNow }
+
+        assertFalse(
+            ValidationUtils.isRecent(
+                timestamp = fixedNow - 1_000,
+                withinMs = -1
+            )
+        )
     }
 }

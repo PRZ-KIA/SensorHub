@@ -147,7 +147,7 @@ app/build/outputs/apk/debug/app-debug.apk
 2. Dodaj manager sensora w `sensors/` (emisja `Flow`).
 3. Rozszerz `SensorRepository` o nowe API.
 4. Dodaj ViewModel i ekran Compose.
-5. Dodaj route w `ui/navigation` i wpis do `NavHost`.
+5. Dodaj route'y w `ui/navigation` i wpis do `NavHost`.
 6. W razie potrzeby dodaj persystencję do `Room`.
 
 ### Dobre praktyki
@@ -160,7 +160,7 @@ app/build/outputs/apk/debug/app-debug.apk
 ## Na co uważać
 
 - W repo istnieje również starsza/alternatywna przestrzeń nazw `com.kia.sensorhub`.
-  Główna aplikacja działa na `com.example.sensorhub`.
+  Główna aplikacja działa na `com.kia.sensorhub`.
 - Część funkcji wymaga runtime permissions (np. lokalizacja, mikrofon, notyfikacje).
 - Nie wszystkie urządzenia mają wszystkie sensory – aplikacja to obsługuje, ale warto testować na różnych modelach.
 
