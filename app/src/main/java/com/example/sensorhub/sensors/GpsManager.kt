@@ -29,7 +29,11 @@ class GpsManager(private val context: Context) {
         return ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
+        ) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
     }
     
     /**
@@ -120,7 +124,7 @@ class GpsManager(private val context: Context) {
     
     /**
      * Calculate distance between two GPS points (in meters)
-     * Using Haversine formula
+     * Uses Android's [Location.distanceBetween] utility.
      */
     fun calculateDistance(
         lat1: Double, lon1: Double,
